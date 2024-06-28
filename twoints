@@ -1,0 +1,77 @@
+#!/bin/bash
+
+if [ $# -lt 1 ]; then
+  echo "Usage: $0 [-d|-b] infile"
+  exit 1
+fi
+
+if [ "$1" == "-d" ]; then
+  decimal_output=true
+  binary_output=falsec
+  shift
+elif [ "$1" == "-b" ]; then
+  decimal_output=false
+  binary_output=true
+  shift
+else
+  decimal_output=false
+  binary_output=false
+fi
+
+infile="$1"
+
+read -p "Enter value for register 1: " number1
+read -p "Enter value for register 2: " number2
+
+if [ "$decimal_output" == true ]; then
+  /u/cs230/pub/twoints $infile <<EOF 2>&1 | gawk '/^\$/ {
+      for (i = 1; i <= NF; i++) {
+          if ($i ~ /^\$/) {
+              printf "%-3s", $i;
+          } else if ($i ~ /^0x/) {
+              printf "%-11d", strtonum($i);
+          } else if ($i ~ /^=/) {
+              printf " %s ", $i;
+          } else {
+              printf "%-3s", $i;
+          }
+      }
+      printf "\n";
+  }'
+$number1
+$number2
+EOF
+elif [ "$binary_output" == true ]; then
+  /u/cs230/pub/twoints $infile <<EOF 2>&1 | awk '
+  function to_binary(n) {
+      bin = ""
+      for (j = 31; j >= 0; j--) {
+          bin = bin (and(n, lshift(1, j)) ? "1" : "0")
+          if (j % 4 == 0 && j != 0) {
+              bin = bin " "
+          }
+      }
+      return bin
+  }
+  /^\$/ {
+      name = "";
+      for (i = 1; i <= NF; i++) {
+          if ($i ~ /^\$/) {
+              name = $i;
+          } else if ($i ~ /^0x/) {
+              value = strtonum($i);
+              if (value != 0) {
+                  printf "%-3s = %s\n", name, to_binary(value);
+              }
+          }
+      }
+  }'
+$number1
+$number2
+EOF
+else
+  /u/cs230/pub/twoints $infile <<EOF 2>&1 | awk '/^\$/ {print}'
+$number1
+$number2
+EOF
+fi
