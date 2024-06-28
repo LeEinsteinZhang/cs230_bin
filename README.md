@@ -6,8 +6,8 @@ To use these scripts, please add this folder to the PATH.
 
 ## Table of Contents
 
-1. [ASm Manual](#asm-manual)
-2. [cs30t Test Script Manual](#cs230t-test-script-manual)
+1. [asmManual](#asm-manual)
+2. [cs230t Test Script Manual](#cs230t-test-script-manual)
 3. [noargs Script Manual](#noargs-script-manual)
 4. [twoints Script Manual](#twoints-script-manual)
 
