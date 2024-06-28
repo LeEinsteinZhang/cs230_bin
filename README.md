@@ -19,9 +19,9 @@ This script is used to assemble an input file (\`infile\`) and save the output t
 
 ## Usage
 
-\`\`\`bash
+```bash
 asm infile [outfile]
-\`\`\`
+```
 
 ### Parameters
 
@@ -32,15 +32,15 @@ asm infile [outfile]
 
 1. Using a specified input and output file:
 
-    \`\`\`bash
+    ```bash
     asm example.asm output.mips
-    \`\`\`
+    ```
 
 2. Specifying only the input file; the output file name will be automatically generated:
 
-    \`\`\`bash
+    ```bash
     asm example.asm
-    \`\`\`
+    ```
 
     In this case, the output file name will be \`example.mips\`.
 
